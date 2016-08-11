@@ -1,0 +1,10 @@
+uk:
+  property_type:
+    ground_section: 'Земельна ділянка'
+    apartment: 'Квартира'
+    room: 'Кімната'
+    cottage: 'Котедж'
+    building: 'Будинок'
+  price_type:
+    sale: 'Продаж'
+    rent: 'Оренда'  

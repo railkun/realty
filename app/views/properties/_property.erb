@@ -1,0 +1,38 @@
+<div class="panel panel-default" >
+  <% @properties.each do |property| %>
+    <div class="panel-heading">
+      <p>
+        <%= link_to  property , class: "btn btn-default" do %>
+          <i class="fa fa-eye" aria-hidden="true" style="font-size:130%;" ></i>
+        <% end %>
+        <%= property.title %>
+        <span class="delete2">
+          <% if current_user == property.user %>
+            <%= link_to  property, class: "btn btn-default", :method => :delete , data: { confirm: 'Are you sure?'} do %>
+              <i class="fa fa-trash-o" aria-hidden="true" style="font-size:130%;"></i>
+            <% end %>
+          <% end %>
+        </span>  
+      </p>
+    </div>
+    <div class="panel-body">
+      <p>
+        <%= property.description %>
+      </p>
+      <% if  property.images.first.present?  %>
+        <%= image_tag(property.images.first.img_url.url, class:"img-thumbnail", style: 'max-height: 80px;') %>
+      <% end %>
+      <div>
+        <%= 'Кількість кімнат:' %>
+        <%= property.apartment %>;
+        <%= 'Ціна:' %>
+        <%= property.price %>;
+        <%= 'Тип нерухомості:' %>
+        <%= t("property_type.#{property.property_type}")%>;
+        <%="Кількість відгуків:"%>
+        <%= property.comments.count %>;
+      </div>
+    </div>
+  <% end %>
+</div>
+<%= paginate @properties, :theme => 'twitter-bootstrap-3', :pagination_class => "pagination-sm" %>

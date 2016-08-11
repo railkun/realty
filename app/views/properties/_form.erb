@@ -1,0 +1,136 @@
+
+<div class="panel panel-default">
+  <div class="panel-body" >
+    <div class="col-sm-3">
+      <%= form_for @property do |f|  %>
+      <p >
+        <p>
+          <%= f.label 'Оголошення:' %><br>
+          <%= f.text_field :title , class:"form-control" %>
+        </p>
+
+        <p>
+          <%= f.label 'Опис квартири:' %><br>
+          <%= f.text_field :description , class:"form-control" %>
+        </p>
+
+        <p>
+          <%= f.hidden_field :lat   %>
+        </p>
+
+        <p>
+          <%= f.hidden_field :lng  %>
+        </p>
+
+        <p>
+          <div id="floating-panel">
+            <%= f.label 'Адрес:' %><br>
+            <%= f.text_field :address , class:"form-control" %>
+            <input id="submit" type="button" value="Знайти на карті" class="btn btn-default">
+          </div>
+          <div id="map"></div>
+        </p>
+
+        <p>
+          <%= f.label 'Площа квартири:' %><br>
+          <%= f.text_field :area , class:"form-control"%>
+        </p>
+
+        <p>
+          <%= f.label 'Ціна:' %><br>
+          <%= f.text_field :price , class:"form-control" %>
+        </p>
+
+        <% @property_types = Property.property_types.map{|pt| [ t("property_type.#{pt[0]}"), pt[0]] } %>
+        <p>
+          <%= f.label 'Тип нерухомості:' %><br>
+          <%= f.select :property_type, options_for_select(@property_types) %>
+        </p>
+
+        <% @price_types = Property.price_types.map{|prt| [ t("price_type.#{prt[0]}"), prt[0]] } %>
+        <p >
+          <%= f.label 'Тип нерухомості:' %><br>
+          <%= f.select :price_type, options_for_select(@price_types) %>
+        </p>
+
+        <p >
+          <%= f.label 'Кількість кімнат:' %><br>
+          <%= f.select :apartment, [1,2,3,4,5,6,7,8,9] %>
+        </p>
+
+        <p>
+          <% if @property.persisted? %>
+            <%= f.submit 'Оновити', class:"btn btn-default" %>
+          <% else %>
+            <%= f.submit 'Стоворити', class: "btn btn-default" %>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+</div>
+      <div class="panel panel-default">
+        <% if @property.persisted? %>
+          <h2> Images </h2>
+            <% @property.images.each do |image| %>
+              <div class="image12">
+                <p class="panel-body">
+                  <div class="thumbnail">
+                    <%= image_tag(image.img_url.url, style: 'max-height: 150px;') %>
+                    <div class="caption">
+                      <div class="image22">
+                        <%= link_to 'Видалити', property_image_path(@property, image), class: "btn btn-default" , :method => :delete, :confirm => "Ви впевнені?"%>
+                      </div>
+                    </div>
+                  </div>
+                </p>
+              </div>
+            <% end %>
+          <div class="image21">
+            <%= form_for [@property, Image.new] do |f| %>
+              <p>
+                <%= f.file_field :img_url %>
+              </p>
+              <p>
+                <%= f.submit 'Додати фото', class: "btn btn-default"  %>
+              </p>
+            <% end %>
+          </div>
+        <% end %>
+
+        <script>
+          function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 16,
+              center: {lat: -34.397, lng: 150.644}
+            });
+            var geocoder = new google.maps.Geocoder();
+
+            document.getElementById('submit').addEventListener('click', function() {
+              geocodeAddress(geocoder, map);
+            });
+          }
+
+          function geocodeAddress(geocoder, resultsMap) {
+            var address = document.getElementById('property_address').value;
+            geocoder.geocode({'address': address}, function(results, status) {
+            if (status === google.maps.GeocoderStatus.OK) {
+              document.getElementById("property_lat").value = results[0].geometry.location.lat()
+              document.getElementById("property_lng").value = results[0].geometry.location.lng()
+              resultsMap.setCenter(results[0].geometry.location);
+              var marker = new google.maps.Marker({
+                map: resultsMap,
+                position: results[0].geometry.location
+              });
+            } else {
+              alert('Geocode was not successful for the following reason: ' + status);
+            }
+            });
+          }
+
+
+          </script>
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDRTlEijllH0W5INVDet5nk8EIfuXmKnBE&signed_in=true&callback=initMap"
+            async defer>
+          </script>
+      </div>

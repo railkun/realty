@@ -1,0 +1,2 @@
+module RealtysHelper
+end

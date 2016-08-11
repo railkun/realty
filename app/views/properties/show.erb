@@ -91,7 +91,7 @@
 
       <p class="panel-body">
         <% @property.images.each do |image| %>
-          <%= link_to(image_tag(image.img_url.url, style: 'max-height: 150px;'),image_path(image.img_url.url)) %>
+          <%= link_to(image_tag(image.img_url.url, style: 'max-height: 150px;'),image_path(image.img_url.url),target: "_blank") %>
         <% end %>
       </p>
 

@@ -5,14 +5,12 @@
         <%= link_to  property , class: "btn btn-default" do %>
           <i class="fa fa-eye" aria-hidden="true" style="font-size:130%;" ></i>
         <% end %>
-        <%= property.title %>
-        <span class="delete2">
-          <% if current_user == property.user %>
-            <%= link_to  property, class: "btn btn-default", :method => :delete , data: { confirm: 'Are you sure?'} do %>
-              <i class="fa fa-trash-o" aria-hidden="true" style="font-size:130%;"></i>
-            <% end %>
+        <% if current_user == property.user %>
+          <%= link_to  property, class: "btn btn-default", :method => :delete , data: { confirm: 'Are you sure?'} do %>
+            <i class="fa fa-trash-o" aria-hidden="true" style="font-size:130%;"></i>
           <% end %>
-        </span>  
+        <% end %>
+        <%= property.title %>
       </p>
     </div>
     <div class="panel-body">

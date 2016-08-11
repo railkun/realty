@@ -105,14 +105,11 @@
             <%= image_tag(comment.user.avatar.url, style: 'max-height: 50px;' ) %>
             <%= comment.user.first_name %>
             <%= comment.user.last_name %>
-            <span class="delete">
               <% if current_user == comment.user %>
                 <%= link_to property_comment_path(@property, comment), class:"btn btn-default" , :method => :delete, :confirm => "Ви впевнені?"    do %>
                   <i class="fa fa-trash-o" aria-hidden="true"></i>
                 <% end %>
               <% end %>
-            </span>
-            </span>
           </div>
           <div class="panel-body">
             <%= comment.description %>
